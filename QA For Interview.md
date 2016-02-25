@@ -16,19 +16,20 @@ Draw Call的次数是决定性能比较重要的指标。
 3. 尽量少的使用反光啦，阴影啦之类的，因为那会使物体多次渲染。
 
 ###_资源动态加载的方式和优缺点_
-答：
-1. 通过Resources模块，调用它的load函数：可以直接load并返回某个类型的Object，前提是要把这个资源放在Resource命名的文件夹下，Unity不关有没有场景引用，都会将其全部打入到安装包中。  
-2. 通过bundle的形式：即将资源打成 asset bundle 放在服务器或本地磁盘，然后使用WWW模块get 下来，然后从这个bundle中load某个object。
-3. 通过AssetDatabase.loadasset ：这种方式只在editor范围内有效，游戏运行时没有这个函数，它通常是在开发中调试用的。  
+答：  
+- 通过Resources模块，调用它的load函数：可以直接load并返回某个类型的Object，前提是要把这个资源放在Resource命名的文件夹下，Unity不关有没有场景引用，都会将其全部打入到安装包中。
+- 通过bundle的形式：即将资源打成 asset bundle 放在服务器或本地磁盘，然后使用WWW模块get 下来，然后从这个bundle中load某个object。
+- 通过AssetDatabase.loadasset ：这种方式只在editor范围内有效，游戏运行时没有这个函数，它通常是在开发中调试用的。  
 
 Resources的方式需要把所有资源全部打入安装包，这对游戏的分包发布（微端）和版本升级（patch）是不利的，所以unity推荐的方式是不用它，都用bundle的方式替代，把资源达成几个小的bundle，用哪个就load哪个，这样还能分包发布和patch，但是在开发过程中，不可能没更新一个资源就打一次bundle，所以editor环境下可以使用AssetDatabase来模拟，这通常需要我们封装一个dynamic resource的loader模块，在不同的环境下做不同实现。
 
 ###_Asset Serialization 中mixed、force binary、force text 区别_
 ###_添加组件和删除组件的方法_
-答：	获取： GetComponent  
+答：  
+	获取： GetComponent  
 	增加： AddComponent  
 	删除： Destroy  
-_*Note that there is no RemoveComponent(), to remove a component, use Object.Destroy_*
+`*Note that there is no RemoveComponent(), to remove a component, use Object.Destroy*`
 
 ###_协程是什么？列举常用的场景_
 ###_协程和C#多线程的区别_
@@ -40,7 +41,7 @@ http://blog.csdn.net/kongbu0622/article/details/8775037
 
 
 ###_光照举例_
-答：
+答：  
 	平行光： Directional Light  
 	聚光灯： Spot Light  
 	点光源： Point Light  
@@ -103,34 +104,34 @@ _那么GC什么时候会触发呢？两种情况_
 
 ###_请简述值类型与引用类型的区别_
 答：区别： 
-1. 值类型存储在内存栈中，引用类型数据存储在内存堆中，而内存单元中存放的是堆中存放的地址。 
-2.  值类型存取快，引用类型存取慢。
-3.  值类型表示实际数据，引用类型表示指向存储在内存堆中的数据的指针和引用。 
-4.  栈的内存是自动释放的，堆内存是 .NET 中会由 GC 来自动释放。 5. 值类型继承自 System.ValueType, 引用类型继承自 System.Object 。 
+- 值类型存储在内存栈中，引用类型数据存储在内存堆中，而内存单元中存放的是堆中存放的地址。
+- 值类型存取快，引用类型存取慢。
+- 值类型表示实际数据，引用类型表示指向存储在内存堆中的数据的指针和引用。 
+- 栈的内存是自动释放的，堆内存是 .NET 中会由 GC 来自动释放。 
+- 值类型继承自 System.ValueType, 引用类型继承自 System.Object 。 
 可参考 http://www.cnblogs.com/JimmyZhang/archive/2008/01/31/1059383.html 
 
 ###_请描述 Interface 与抽象类之间的不同_
-答：
-1. 抽象类表示该类中可能已经有一些方法的具体定义，但接口就是公公只能定义各个方法的界面 ，不能具体的实现代码在成员方法中。 
-2. 类是子类用来继承的，当父类已经有实际功能的方法时该方法在子类中可以不必实现，直接引用父类的方法，子类也可以重写该父类的方法。 
-3. 实现接口的时候必须要实现接口中所有的方法，不能遗漏任何一个。
+答：  
+- 抽象类表示该类中可能已经有一些方法的具体定义，但接口就是公公只能定义各个方法的界面 ，不能具体的实现代码在成员方法中。
+- 类是子类用来继承的，当父类已经有实际功能的方法时该方法在子类中可以不必实现，直接引用父类的方法，子类也可以重写该父类的方法。
+- 实现接口的时候必须要实现接口中所有的方法，不能遗漏任何一个。
 
 
 ###_请简述 private ， public ， protected ， internal 的区别_
 答： 
-1. public ：对任何类和成员都公开，无限制访问 
-2. private ：仅对该类公开 
-3. protected：对该类和其派生类公开 
-4. internal ：只能在包含该类的程序集中访问该类 
-5. 
+- public ：对任何类和成员都公开，无限制访问 
+- private ：仅对该类公开
+- protected：对该类和其派生类公开 
+- internal ：只能在包含该类的程序集中访问该类   
 ###_Unity是左手还是右手坐标系_
 答：左手坐标系
 
 ###_向量的点乘、叉乘以及归一化的意义_
-答：
-1. 点乘描述了两个向量的相似程度，结果越大两向量越相似，还可表示投影 
-2. 叉乘得到的向量垂直于原来的两个向量 
-3. 标准化向量：用在只关系方向，不关心大小的时候 
+答：  
+- 点乘描述了两个向量的相似程度，结果越大两向量越相似，还可表示投影 
+- 叉乘得到的向量垂直于原来的两个向量 
+- 标准化向量：用在只关系方向，不关心大小的时候 
 
 ###_Struct 和 Class 的区别_
 答：
