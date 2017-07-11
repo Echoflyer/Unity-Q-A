@@ -207,9 +207,7 @@ Unity3d 没有多线程的概念，不过 unity 也给我们提供了StartCorout
 ####**- Alpha Test和Alpha Blend区别？**
 答：Alpha Blend 实现透明效果，不过只能针对某块区域进行alpha操作，透明度可设。
 {['?lf?] 透明（度）； [blend] 混合；把…掺在一起}
-Alpha Test 
-	
-	
+
 ####**- FixedUpdate和Update 区别？**
 答：FixedUpdate ，每固定帧绘制时执行一次，和 update 不同的是 FixedUpdate 是渲染帧执行，
 如果你的渲染效率低下的时候 FixedUpdate 调用次数就会跟着下降。FixedUpdate 比较适用于物理引擎的计算，因为是跟每帧渲染有关。 Update 就比较适合做控制。
@@ -328,7 +326,6 @@ Alpha Test
 - 使用不同材质的实例化物体（instance）将会导致批处理失败。
 - 统一缩放的物体不会与非统一缩放的物体进行批处理。
 - 预设体的实例会自动地使用相同的网格模型和材质。
-
 
 
 **/
