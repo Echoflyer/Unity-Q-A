@@ -1,15 +1,124 @@
 /**
 
+http://blog.csdn.net/yaokang522/article/details/46413793
 
 ##Unity面试题
+
+####**- 如何优化内存？**
+A、压缩自带类库；
+B、将暂时不用的以后还需要使用的物体隐藏起来而不是直接Destroy掉；
+C、释放AssetBundle占用的资源；AssetBundle资源包
+D、降低模型的片面数，降低模型的骨骼数量，降低贴图的大小；
+E、使用光照贴图，使用多层次细节(LOD)，使用着色器(Shader)，使用预设(Prefab)。
 
 ####**- C#代理和事件的区别？**
 答：委托是一个类，它定义了方法的类型，使得可以将方法当作另一个方法的参数来进行传递，
 这种将方法动态地赋给参数的做法，可以避免在程序中大量使用If-Else(Switch)语句，同时使得程序具有更好的可扩展性。
 
+####**- 物体发生碰撞的必要条件？**
+答：两个物体都必须带有碰撞器(Collider)，其中一个物体还必须带有Rigidbody刚体。
+
+####**- 在unity中用鼠标实现在场景中拖动物体，用鼠标滚轮实现缩放？**
+答：http://www.cnblogs.com/hewencong/p/4299722.html
+
+####**- 在物体发生碰撞的整个过程中，有几个阶段，分别列出对应的函数？**
+答：三个阶段
+1.OnCollisionEnter(进入碰撞) 2.OnCollisionStay (逗留碰撞) 3.OnCollisionExit(当退出碰撞) 
+
+####**- Unity3d的物理引擎中，有几种施加力的方式，分别描述出来？**
+答：rigidbody.AddForce/AddForceAtPosition，都在rigidbody系列函数中
+
+####**- 矩阵相乘的意义及注意点**
+答：用于表示线性变换：旋转、缩放、投影、平移、仿射
+注意矩阵的蠕变：误差的积累
+
+####**- Unity 连接数据库**
+答：需要得到Mono.Data.Sqlite.dll 文件与System.Data.dll文件
+
+####**- 请简述为什么dynamic font在unicode环境下优于static font。**
+答：Unicode是国际组织制定的可以容纳世界上所有文字和符号的字符编码方案。
+使用动态字体时，Unity将不会预先生成一个与所有字体的字符纹理。当需要支持亚洲语言或者较大的字体的时候，若使用正常纹理，则字体的纹理将非常大。
+
+####**- 请简述如何在不同分辨率下保持UI的一致性**
+答：NGUI很好的解决了这一点，屏幕分辨率的自适应性，原理就是计算出屏幕的宽高比跟原来的预设的屏幕分辨率求出一个对比值，然后修改摄像机的size。
+
+####**- 请简述.Net与Mono之间的关系**
+答：.Net是一个语言平台
+Mono为.Net提供集成开发环境，集成并实现了.NET的编译器、CLR 和基础类库，使得.Net既可以运行在windows也可以运行于 linux，Unix，Mac OS 等。
+
+####**- 请简述反射的实现原理**
+答：反射的定义：审查元数据并收集关於它的类型信息的能力,元数据(编辑后的基本数据单元)就是一大堆表，编译器会创建一个类定义表，
+一个字段定义表，一个方法定义表等,System.Reflection命名空间包含的几个类，允许你反射(解析)这些元数据的代码
+反射的作用：
+动态的创建类型的实例,将类型邦定到现有对象，或从现有对象中获取类型 
+应用程序需要在运行时从某个特定的程序集中载入一个特定的类型，以便实现某个任务时可以用到反射 
+反射主要应用於类库，这些类库需要知道一个类型的定义，以便提供更多的功能
+
+####**- 请简述ArrayList和List之间的主要区别？**
+答：ArrayList：  ArrayList是命名空间System.Collections下的一部分，在使用该类时必须进行引用，同时继承了IList接口，提供了数据存储和检索。
+ArrayList对象的大小是按照其中存储的数据来动态扩充与收缩的。所以，在声明ArrayList对象时并不需要指定它的长度。
+所有加入的数据均为object，使用需要装箱与拆箱。
+泛型List： List是命名空间System.Collections.Generic下，因为ArrayList存在不安全类型与装箱拆箱的缺点，所以出现了泛型的概念。
+List类是ArrayList类的泛型等效类，它的大部分用法都与ArrayList相似，因为List类也继承了IList接口。
+最关键的区别在于，在声明List集合时，我们同时需要为其声明List集合内数据的对象类型。
+简单说：都是集合，ArrayList 类型不安全，因为加入的数据为object类型，所以需要装箱与拆箱，效率较低。
+List：声明时就决定了类型，所以是类型安全的，省掉了装箱与拆箱的过程，效率比ArrayList要高。
+
+####**- 下列代码在运行中，会产生几个临时对象？**
+答：[code]csharpcode：
+string a=new string（“abc”）；
+a=（a.ToUpperCase()+“123”）.SubString(0,2);
+
+5个
+
+####**- 使用原生GUI创建一个可以拖动的窗口命令是什么？**
+答：GUI.DragWindow();
+
+####**- LayerMask.NameToLayer()这个方法有什么作用？**
+答：LayerMask的使用是按位操作的，LayerMask.NameToLayer("Players") 返回该Layer的编号。
+
+####**- 请说出4种面向对象的设计原则，并分别简述它们的含义。？**
+答：1） 单一职责原则 （The Single Responsiblity Principle，简称SRP）：一个类，最好只做一件事，只有一个引起它的变化.
+2） 开放－封闭原则 （The Open－Close Principle，简称OCP）：对于扩展是开放的，对于更改是封闭的
+3） Liskov 替换原则（The Liskov Substitution Principle,简称LSP）：子类必须能够替换其基类
+4） 依赖倒置原则（The Dependency Inversion Pricinple，简称DIP）：依赖于抽象
+5） 接口隔离原则 （The Interface Segregation Principle，简称ISP）：使用多个小的专门的接口，而不要使用一个大的总接口。
+
+####**- 写出Animation的五个方法？**
+答：AddClip 添加剪辑、Blend 混合、Play 播放、Stop 停止、Sample 采样
+
+####**- 使用原生GUI创建一个可以拖动的窗口命令是什么？**
+答：GUI.DragWindow();
+
+####**- 反向旋转动画的方法是什么？**
+答：反转动画，讲动画的速度调到-1，碰撞时，被碰撞物体与碰撞物体有collider组件，碰撞物体有刚体组件，或角色碰撞得包含角色组件 OR 改变animation.speed
+
+####**- MipMap是什么，作用？**
+答：MipMapping：在三维计算机图形的贴图渲染中有常用的技术，为加快渲染进度和减少图像锯齿，
+贴图被处理成由一系列被预先计算和优化过的图片组成的文件，这样的贴图被称为MipMap。
+
+####**- Vertex Shader是什么，怎么计算？**
+答：顶点着色器是一段执行在GPU上的程序，用来取代fixed pipeline中的transformation和lighting，Vertex Shader主要操作顶点。
+Vertex Shader对输入顶点完成了从local space到homogeneous space（齐次空间）的变换过程，homogeneous space即projection space的下一个space。在这其间共有world transformation, view transformation和projection transformation及lighting几个过程。
+
+####**- Lod是什么，优缺点是什么？**
+答：LOD(Level of detail)多层次细节，是最常用的游戏优化技术。
+它按照模型的位置和重要程度决定物体渲染的资源分配，降低非重要物体的面数和细节度，从而获得高效率的渲染运算。
+
+####**- 请描述游戏动画有哪几种，以及其原理？**
+答：主要有关节动画、骨骼动画、单一网格模型动画(关键帧动画)。
+a.关节动画：把角色分成若干独立部分，一个部分对应一个网格模型，部分的动画连接成一个整体的动画，角色比较灵活，Quake2中使用这种动画；
+b.骨骼动画，广泛应用的动画方式，集成了以上两个方式的优点，骨骼按角色特点组成一定的层次结构，有关节相连，可做相对运动，皮肤作为单一网格蒙在骨骼之外，决定角色的外观；
+c.单一网格模型动画由一个完整的网格模型构成，在动画序列的关键帧里记录各个顶点的原位置及其改变量，然后插值运算实现动画效果，角色动画较真实。
+
+####**- 请简述Unity3d下如何安全的在不同工程间迁移asset数据，请列举出三种方法？**
+答：1.可以把assets目录和Library目录一起迁移
+2.导出包
+3.用Unity带的assets Server功能
+
 ####**- Unity脚本生命周期？**
-答：委托是一个类，它定义了方法的类型，使得可以将方法当作另一个方法的参数来进行传递，
-这种将方法动态地赋给参数的做法，可以避免在程序中大量使用If-Else(Switch)语句，同时使得程序具有更好的可扩展性。
+答：1、（激活时的初始化代码）Awake 2、Start 3、Update【FixUpdate、LateUpdate】
+4、（渲染模块）OnGUI 5、再向后，就是卸载模块（TearDown），这里主要有两个方法OnDisable与OnDestroy
 
 ####**- 什么是Draw Call？减少Draw Call的方法？**
 答：Unity每次在准备数据并通知GPU渲染的过程称为一次Draw Call。
@@ -45,6 +154,11 @@ Draw Call的次数是决定性能比较重要的指标。
 	 所以unity推荐的方式是不用它，都用bundle的方式替代，把资源达成几个小的bundle，用哪个就load哪个，这样还能分包发布和patch，
 	 但是在开发过程中，不可能没更新一个资源就打一次bundle，所以editor环境下可以使用AssetDatabase来模拟，
 	 这通常需要我们封装一个dynamic resource的loader模块，在不同的环境下做不同实现。
+	 
+####**- 动态资源的存放？**
+  有时我需要存放一些自己的文件在磁盘上，例如我想把几个bundle放在初始的安装里， unity有一个streaming asset的概念，用于提供存储接口的访问。
+  我们需要在编辑器建立一个StreamingAssets名字的文件夹，把需要我们放在客户磁盘上的动态文件放在这个文件夹下面，
+  这样安装后，这些文件会放在用户磁盘的指定位置，这个位置可以通过Application.streamingAssetsPath来得到。
 ####**- Asset Serialization 中mixed、force binary、force text 区别？**
 ####**- 添加组件和删除组件的方法？**
 答：获取： GetComponent
@@ -91,6 +205,11 @@ Unity3d 没有多线程的概念，不过 unity 也给我们提供了StartCorout
 答：修改 sharedMaterial 将改变所有物体使用这个材质的外观，并且也改变储存在工程里的材质设置。 
 不推荐修改由 sharedMaterial 返回的材质。如果你想修改渲染器的材质，使用 material替代。
 ####**- Alpha Test和Alpha Blend区别？**
+答：Alpha Blend 实现透明效果，不过只能针对某块区域进行alpha操作，透明度可设。
+{['?lf?] 透明（度）； [blend] 混合；把…掺在一起}
+Alpha Test 
+	
+	
 ####**- FixedUpdate和Update 区别？**
 答：FixedUpdate ，每固定帧绘制时执行一次，和 update 不同的是 FixedUpdate 是渲染帧执行，
 如果你的渲染效率低下的时候 FixedUpdate 调用次数就会跟着下降。FixedUpdate 比较适用于物理引擎的计算，因为是跟每帧渲染有关。 Update 就比较适合做控制。
@@ -142,6 +261,10 @@ Unity3d 没有多线程的概念，不过 unity 也给我们提供了StartCorout
 答：变慢
 ####**- 简单说明渲染管线？**
 答：
+--是指在显示器上为了显示出图像而经过的一系列必要操作。
+渲染管道中的很多步骤，都要将几何物体从一个坐标系中变换到另一个坐标系中去。
+主要步骤有：
+本地坐标->视图坐标->背面裁剪->光照->裁剪->投影->视图变换->光栅化。
 -- 渲染管线的工作任务在于由一个三维场景触发、生成渲染一张二维图像，换句话说，计算机需要从一些列的顶点数据、纹理信息等触发，
 把这些信息最终转换成一张任艳可以看到的图像，而这个过程通常是由CPU和GPU共同完成的。一个渲染流程大致可分为三个阶段：
 应用阶段-（输出渲染图元）-几何阶段-（输出屏幕空间的顶点信息）-光栅化阶段
