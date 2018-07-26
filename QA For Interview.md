@@ -1,10 +1,10 @@
 
 ## Unity面试题
 
-### _C#代理和事件的区别_
+### C#代理和事件的区别
 答：委托是一个类，它定义了方法的类型，使得可以将方法当作另一个方法的参数来进行传递，这种将方法动态地赋给参数的做法，可以避免在程序中大量使用If-Else(Switch)语句，同时使得程序具有更好的可扩展性。
 
-### _什么是Draw Call？减少Draw Call的方法_
+### 什么是Draw Call？减少Draw Call的方法
 答：Unity每次在准备数据并通知GPU渲染的过程称为一次Draw Call。
 其实就是对底层图形程序（比如：OpenGL ES)接口的调用，以在屏幕上画出东西。
 一般情况下，渲染一次拥有一个网格并携带一种材质的物体便会使用一次Draw Call。
@@ -15,7 +15,7 @@ Draw Call的次数是决定性能比较重要的指标。
 2. 通过把纹理打包成图集来尽量减少材质的使用。
 3. 尽量少的使用反光啦，阴影啦之类的，因为那会使物体多次渲染。
 
-### _资源动态加载的方式和优缺点_
+### 资源动态加载的方式和优缺点
 答：  
 - 通过Resources模块，调用它的 load 函数：可以直接 load 并返回某个类型的 Object，前提是要把这个资源放在 Resource 命名的文件夹下，Unity不关有没有场景引用，都会将其全部打入到安装包中。
 - 通过bundle的形式：即将资源打成 `asset bundle` 放在服务器或本地磁盘，然后使用 WWW 模块 get 下来，然后从这个 bundle 中 load 某个 object。
@@ -23,8 +23,9 @@ Draw Call的次数是决定性能比较重要的指标。
 
 Resources的方式需要把所有资源全部打入安装包，这对游戏的分包发布（微端）和版本升级（patch）是不利的，所以unity推荐的方式是不用它，都用bundle的方式替代，把资源达成几个小的bundle，用哪个就load哪个，这样还能分包发布和 patch，但是在开发过程中，不可能每更新一个资源就打一次bundle，所以editor环境下可以使用AssetDatabase来模拟，这通常需要我们封装一个`dynamic resource`的`loader`模块，在不同的环境下做不同实现。
 
-### _Asset Serialization 中mixed、force binary、force text 区别_
-### _添加组件和删除组件的方法_
+### Asset Serialization 中mixed、force binary、force text 区别  
+
+### 添加组件和删除组件的方法
 答：  
 	获取： GetComponent  
 	增加： AddComponent  
@@ -32,8 +33,9 @@ Resources的方式需要把所有资源全部打入安装包，这对游戏的�
 	
 `Note that there is no RemoveComponent(), to remove a component, use Object.Destroy`
 
-### _协程是什么？列举常用的场景_
-### _协程和C#多线程的区别_
+### 协程是什么？列举常用的场景  
+
+### 协程和C#多线程的区别
 答：
 http://blog.csdn.net/kongbu0622/article/details/8775037
 
@@ -41,49 +43,50 @@ http://blog.csdn.net/kongbu0622/article/details/8775037
 2. `StartCoroutine` 为什么叫协同程序呢，所谓协同，就是当你在 `StartCoroutine` 的函数体里处理一段代码时，利用 yield 语句等待执行结果，这期间不影响主程序的继续执行，可以协同工作。而 `LoadLevelAsync` 则允许你在后台加载新资源和场景，所以再利用协同，你就可以前台用 loading 条或动画提示玩家游戏未卡死，同时后台协同处理加载的事宜。   
 
 
-### _光照举例_
+### 光照举例
 答：  
 	平行光： `Directional Light`  
 	聚光灯： `Spot Light`  
 	点光源： `Point Light`  
 	区域光源： `Area Light` （只用于烘培）  
 
-### _Cam设置为Depth Only有什么用_
+### Cam设置为Depth Only有什么用
 答：为相机使用Depth Only作为清除标志，会使相机仅仅根据相机的深度信息来输出画面，比如相机深度为N的清除标志设为Depth only，那么它的输出会直接覆盖在所有深度小于N的相机输出画面上，而不管在真实的3D环境中，各种对象的z值如何。
 
-### _Unity如何与ios和安卓交互_
-### _Mesh中material和sharedMaterail的区别_
+### Unity如何与ios和安卓交互
+### Mesh中material和sharedMaterail的区别
 答：修改 `sharedMaterial` 将改变所有物体使用这个材质的外观，并且也改变储存在工程里的材质设置。   
 不推荐修改由 `sharedMaterial` 返回的材质。如果你想修改渲染器的材质，使用 material替代。
 
-### _Alpha Test和Alpha Blend区别_
-### _FixedUpdate和Update 区别_
+### Alpha Test和Alpha Blend区别  
+
+### FixedUpdate和Update 区别
 答：FixedUpdate ，每固定帧绘制时执行一次，和 update 不同的是 FixedUpdate 是渲染帧执行，如果你的渲染效率低下的时候 FixedUpdate 调用次数就会跟着下降。FixedUpdate 比较适用于物理引擎的计算，因为是跟每帧渲染有关。 Update 就比较适合做控制。
 
-### _cam设置写在哪个回调函数里_
+### cam设置写在哪个回调函数里
 答：LateUpdate, ，是在所有 update 结束后才调，比较适合用于命令脚本的执行。官网上例子是摄像机的跟随，都是在所有 update 操作完才跟进摄像机，不然就有可能出现摄像机已经推进了，但是视角里还未有角色的空帧出现。
 
-### _LightMap是什么_
+### LightMap是什么
 答：简单地说, 就是把物体光照的明暗信息保存到纹理上, 实时绘制时不再进行光照计算, 而是采用预先生成的光照纹理(lightmap)来表示明暗效果。
 
-#### _好处_
+##### 好处
 - 由于省去了光照计算, 可以提高绘制速度；
 - 对于一些过度复杂的光照(如光线追踪, 辐射度, AO等算法), 实时计算不太现实. 如果预先计算好保存到纹理上, 这样无疑可以大大提高模型的光影效果；
 - 保存下来的lightmap还可以进行二次处理, 如做一下模糊, 让阴影边缘更加柔和
 
 
-#### _当然, 缺点也是有的_
+##### 当然, 缺点也是有的
 
 - 模型额外多了一层纹理, 这样相当于增加了资源的管理成本(异步装载, 版本控制, 文件体积等). 当然, 也可以选择把明暗信息写回原纹理, 但这样限制比较多, 如纹理坐标范围, 物体实例个数...
 - 模型需要隔外一层可以展开到一张纹理平面的UV(范围只能是[0,1], 不能重合). 如果原模型本身就是这样, 可以结省掉. 但对于大多数模型来说, 可能会采用WRAP/MIRROR寻址, 这只能再做一层, 再说不能强制每个模型只用一张纹理吧? 所以, lightmap的UV需要美术多做一层, 程序展开算法这里不提及....
 - 静态的光影效果与对动态的光影没法很好的结合. 如果光照方向改变了的话, 静态光影效果是无法进行变换的. 而且对于静态的阴影, 没法直接影响到动态的模型. 这一点, 反而影响了真实度
 
 
-### _如何减少GC回调次数_
+### 如何减少GC回调次数
 答：首先我们要明确所谓的GC是Mono运行时的机制，而非Unity3D游戏引擎的机制，所以GC也主要是针对Mono的对象来说的，而它管理的也是Mono的托管堆。 搞清楚这一点，你也就明白了GC不是用来处理引擎的assets（纹理啦，音效啦等等）的内存释放的，因为U3D引擎也有自己的内存堆而不是和Mono一起使用所谓的托管堆。
 
 其次我们要搞清楚什么东西会被分配到托管堆上？不错咯，就是引用类型咯。比如类的实例，字符串，数组等等。而作为int，float，包括结构体struct其实都是值类型，它们会被分配在堆栈上而非堆上。所以我们关注的对象无外乎就是类实例，字符串，数组这些了。
-#### _那么GC什么时候会触发呢？两种情况_
+##### 那么GC什么时候会触发呢？两种情况
 
 首先当然是我们的堆的内存不足时，会自动调用GC。
 其次呢，作为编程人员，我们自己也可以手动的调用GC。
@@ -96,14 +99,15 @@ http://blog.csdn.net/kongbu0622/article/details/8775037
 - 最好不用LINQ的命令，因为它们会分配临时的空间，同样也是GC收集的目标。而且我很讨厌LINQ的一点就是它有可能在某些情况下无法很好的进行AOT编译。比如“OrderBy”会生成内部的泛型类“OrderedEnumerable”。这在AOT编译时是无法进行的，因为它只是在OrderBy的方法中才使用。所以如果你使用了OrderBy，那么在IOS平台上也许会报错。
 
 
-### _timescale = 0.5时 执行速度是变慢还是变快_
+### timescale = 0.5时 执行速度是变慢还是变快
 答：变慢
 
-### _简单说明渲染管线_
-### _物体围绕特定轴旋转的API_
+### 简单说明渲染管线  
+
+### 物体围绕特定轴旋转的API
 答：`transform.RotateAround(Vector3 point, Vector3 axis, float angle);`
 
-### _请简述值类型与引用类型的区别_
+### 请简述值类型与引用类型的区别
 答：区别： 
 - 值类型存储在内存栈中，引用类型数据存储在内存堆中，而内存单元中存放的是堆中存放的地址。
 - 值类型存取快，引用类型存取慢。
@@ -112,14 +116,14 @@ http://blog.csdn.net/kongbu0622/article/details/8775037
 - 值类型继承自 System.ValueType, 引用类型继承自 System.Object 。 
 可参考 http://www.cnblogs.com/JimmyZhang/archive/2008/01/31/1059383.html 
 
-### _请描述 Interface 与抽象类之间的不同_
+### 请描述 Interface 与抽象类之间的不同
 答：  
 - 抽象类表示该类中可能已经有一些方法的具体定义，但接口就是公公只能定义各个方法的界面 ，不能具体的实现代码在成员方法中。
 - 类是子类用来继承的，当父类已经有实际功能的方法时该方法在子类中可以不必实现，直接引用父类的方法，子类也可以重写该父类的方法。
 - 实现接口的时候必须要实现接口中所有的方法，不能遗漏任何一个。
 
 
-### _请简述 private ， public ， protected ， internal 的区别_
+### 请简述 private ， public ， protected ， internal 的区别
 答： 
 - public ：对任何类和成员都公开，无限制访问 
 - private ：仅对该类公开
@@ -127,16 +131,16 @@ http://blog.csdn.net/kongbu0622/article/details/8775037
 - internal ：只能在包含该类的程序集中访问该类  
 
 
-### _Unity是左手还是右手坐标系_
+### Unity是左手还是右手坐标系
 答：左手坐标系
 
-### _向量的点乘、叉乘以及归一化的意义_
+### 向量的点乘、叉乘以及归一化的意义
 答：  
 - 点乘描述了两个向量的相似程度，结果越大两向量越相似，还可表示投影 
 - 叉乘得到的向量垂直于原来的两个向量 
 - 标准化向量：用在只关系方向，不关心大小的时候 
 
-### _Struct 和 Class 的区别_
+### Struct 和 Class 的区别
 答：
 -  类是引用类型，struct是值类型
 -  在托管堆上创建类的实例，在栈上创建struct实例
@@ -148,7 +152,7 @@ http://blog.csdn.net/kongbu0622/article/details/8775037
 -  类的成员很容易赋初值，很难给struct类型成员赋初值
 -  类的实例只能通过`new SomeClass()`来创建，struct类型的实例既可以通过`new SomeStruct()`来创建，也可以通过`SomeStruct myStruct`来创建
 
-### _静态批处理与动态批处理的区别_
+### 静态批处理与动态批处理的区别
 答：
 ##### Static Batching 静态批处理：
 只要这些物体不移动，并且拥有相同的材质，静态批处理就允许引擎对任意大小的几何物体进行批处理操作来降低描绘调用。静态批处理的好处很多，其中之一就是与下面要说的动态批处理相比，约束要少很多。所以一般推荐的是`draw call`的静态批处理来减少`draw call`的次数。那么接下来，我们就继续聊聊`draw call`的动态批处理。
